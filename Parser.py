@@ -1,41 +1,6 @@
-import os
-
-
-class Session:
-    def __init__(self, startTime, endTime, createdAt, updatedAt, startTimeTimezoneOffset, endTimeTimezoneOffset,
-                 distance, duration, elevationGain, elevationLoss, averageSpeed, calories, longitude, latitude,
-                 maxSpeed, pauseDuration, durationPerKM, pulseAVG, pulseMAX, avgCadence, maxCadence, manual, edited,
-                 completed, liveTrackingActive, liveTrackingEnabled, cheeringEnabled, indoor, id, sportTypeID):
-        self.startTime = startTime
-        self.endTime = endTime
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
-        self.startTimeTimezoneOffset = startTimeTimezoneOffset
-        self.endTimeTimezoneOffset = endTimeTimezoneOffset
-        self.distance = distance
-        self.duration = duration
-        self.elevationGain = elevationGain
-        self.elevationLoss = elevationLoss
-        self.averageSpeed = averageSpeed
-        self.calories = calories
-        self.longitude = longitude
-        self.latitude = latitude
-        self.maxSpeed = maxSpeed
-        self.pauseDuration = pauseDuration
-        self.durationPerKM = durationPerKM
-        self.pulseAVG = pulseAVG
-        self.pulseMAX = pulseMAX
-        self.avgCadence = avgCadence
-        self.maxCadence = maxCadence
-        self.manual = manual
-        self.edited = edited
-        self.completed = completed
-        self.liveTrackingActive = liveTrackingActive
-        self.liveTrackingEnabled = liveTrackingEnabled
-        self.cheeringEnabled = cheeringEnabled
-        self.indoor = indoor
-        self.id = id
-        self.sportTypeID = sportTypeID
+import os, json
+from datetime import datetime
+from Session import Session
 
 
 class Parser:
@@ -57,14 +22,20 @@ class Parser:
     def initialize_sport_sessions(self):
         files = os.listdir("Sport-sessions")
         sessions = []
-        for session in files:
-            if session[len(session)-5:len(session)] == ".json":
-                sessions.append(session)
-        if sessions:
-            print("Warning: Your have 0 sessions!")
-        self.sport_sessions = sessions
-        return sessions
+        for file in files:
+            if file[len(file)-5:len(file)] != ".json":
+                files.remove(file)
+        for file in files:
+            with open("Sport-sessions/" + file) as data:
+                sessions.append(json.load(data))
+        dates = []
+        for session in sessions:
+            dates.append(datetime.fromtimestamp(session["start_time"]/1000+7200))
+        dates.sort()
+        for date in dates:
+            print(date)
 
 
 p = Parser()
-sportSessions = p.initialize_sport_sessions()
+p.initialize_sport_sessions()
+
