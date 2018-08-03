@@ -37,7 +37,7 @@ class Parser:
                 end_time = datetime.fromtimestamp((session_data["end_time"] +
                                                    session_data["end_time_timezone_offset"])/1000)
                 distance = session_data["distance"]/1000
-                duration = round(session_data["duration"]/1000)
+                duration = session_data["duration"]/60000
                 elevation_gain = session_data["elevation_gain"]
                 elevation_loss = session_data["elevation_loss"]
                 average_speed = session_data["average_speed"]
@@ -57,7 +57,7 @@ class Parser:
                 session_id = session_data["id"]
                 sport_type_id = session_data["sport_type_id"]
                 new_session = Session(start_time, end_time, distance, duration, elevation_gain, elevation_loss,
-                                      average_speed, calories, longitude, latitude, max_speed, pause_duration,
+                                      average_speed, calories, longitude, latitude, max_speed, pause_duration/60,
                                       pulse_avg, pulse_max, avg_cadence, max_cadence, manual, edited, completed, indoor,
                                       session_id, sport_type_id)
                 new_sessions.append(new_session)
