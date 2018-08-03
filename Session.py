@@ -25,8 +25,14 @@ class Session:
         self.indoor = indoor
         self.id = id
         self.sportTypeID = sportTypeID
-        print("created new session")
 
     def __str__(self):
-        return str(self.distance) + "km, " + str(round(self.duration/60)) + " min from " + self.startTime.strftime("%d.%m.%y")
+        return str(self.distance) + "km, " + str(round(self.duration/60)) + " min from " + \
+               self.startTime.strftime("%d.%m.%y")
+
+    def __lt__(self, other):
+        return self.startTime < other.startTime
+
+    def __gt__(self, other):
+        return self.startTime > other.startTime
 

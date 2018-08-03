@@ -26,12 +26,16 @@ class Parser:
         for file in os.listdir(self.sport_sessions_dir):
             if file[len(file)-5:len(file)] == ".json":
                 sessions.append(file)
+        print("Initializing sessions...")
+        number_of_sessions = 0
         for session in sessions:
             with open(self.sport_sessions_dir + session) as data:
                 session_data = json.load(data)
             try:
-                start_time = datetime.fromtimestamp((session_data["start_time"]+session_data["start_time_timezone_offset"])/1000)
-                end_time = datetime.fromtimestamp((session_data["end_time"]+session_data["end_time_timezone_offset"])/1000)
+                start_time = datetime.fromtimestamp((session_data["start_time"] +
+                                                     session_data["start_time_timezone_offset"])/1000)
+                end_time = datetime.fromtimestamp((session_data["end_time"] +
+                                                   session_data["end_time_timezone_offset"])/1000)
                 distance = session_data["distance"]/1000
                 duration = round(session_data["duration"]/1000)
                 elevation_gain = session_data["elevation_gain"]
@@ -50,19 +54,17 @@ class Parser:
                 edited = session_data["edited"]
                 completed = session_data["completed"]
                 indoor = session_data["indoor"]
-                id = session_data["id"]
+                session_id = session_data["id"]
                 sport_type_id = session_data["sport_type_id"]
                 new_session = Session(start_time, end_time, distance, duration, elevation_gain, elevation_loss,
                                       average_speed, calories, longitude, latitude, max_speed, pause_duration,
                                       pulse_avg, pulse_max, avg_cadence, max_cadence, manual, edited, completed, indoor,
-                                      id, sport_type_id)
+                                      session_id, sport_type_id)
                 new_sessions.append(new_session)
-                print("Processed session from " + start_time.strftime("%d.%m.%Y "))
+                number_of_sessions += 1
             except:
                 print("Couldnt process session " + session)
+        new_sessions.sort()
+        print(str(number_of_sessions) + " Sessions initialized")
         self.sessions = new_sessions
-
-
-p = Parser()
-p.initialize_sport_sessions()
 
