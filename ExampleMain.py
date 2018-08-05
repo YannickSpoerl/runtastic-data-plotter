@@ -1,7 +1,7 @@
 from Parser import Parser
 from Plotter import Plotter
 
-parser = Parser()
+parser = Parser("/home/yannick/Desktop/runtastic-data")
 parser.initialize_sport_sessions()
 plotter = Plotter(parser)
 graphs = list([plotter.bar_graph("duration")])

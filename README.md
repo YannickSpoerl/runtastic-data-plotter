@@ -9,12 +9,12 @@ functions into a simple to use format, combining them with your runtastic-data.
 ## How do I set it up?
 At first you need to get your runtastic data! Therefore you go on the runtastic-website, log-in, go to settings and export your data.
 Because this script uses plotly, you need to install the plotly-python-library (https://plot.ly/d3-js-for-python-and-pandas-charts/) </br>
-For now you need to place the script into the same directory, as your runtastic-data directories (Sport-sessions directory). </br>
-That might change in the future though.
 ## How do I use it?
 Take a look into the `ExampleMain.py`! 
 * If you create an own script, make sure you dont forget the imports!
-* Create a new Parser with `parser = Parser()`
+* Create a new Parser with `parser = Parser("/Path/to/the/Sport-sessions/directory")` with giving it the path to the directory
+where the Sport-sessions directory lies. If the script lies in the same directory as 'Sport-sessions' you can leave the path empty 
+like 'parser = Parser()'
 * initialize the parser with `parser.initialize_sport_sessions()`
 * create a new plotter with `plotter = Plotter(parser)`
 * create a new bar-graph with `my_bar_graph = plotter.bar_graph("my_data")`

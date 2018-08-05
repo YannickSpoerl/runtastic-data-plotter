@@ -1,26 +1,29 @@
-import os, json
+import json
+import os
 from datetime import datetime
 from Session import Session
 
 
 class Parser:
 
-    # TODO: give path manually
-    def __init__(self):
+    def __init__(self, path=os.getcwd()):
+        rel_path = os.path.relpath(path, os.getcwd()) + "/Sport-sessions"
         self.sessions = []
-        if os.path.exists("User") and os.path.isdir("User"):
-            print("'User' directory found and added")
-            self.user_dir = "User/"
+        self.sport_sessions_dir_validated = False
+        if os.path.exists(rel_path) and os.path.isdir(rel_path):
+            self.sport_sessions_dir = rel_path
+            print("'Sport-sessions' directory found at " + rel_path)
+            self.sport_sessions_dir_validated = True
         else:
-            print("'User' directory not found")
-
-        if os.path.exists("Sport-sessions") and os.path.isdir("Sport-sessions"):
-            self.sport_sessions_dir = "Sport-sessions/"
-            print("'Sport-sessions' directory found and added")
-        else:
-            print("'Sport-sessions' directory not found")
+            print("'Sport-sessions' directory not found. Possible Errors: \n -the directory where the sessions lie is"
+                  "not named 'Sport-sessions': Fix it by renaming it correctly. \n -you gave the wrong path. "
+                  "Fix it by giving the correct path. \n -General fix: just put the 'Sport-sessions directory in the "
+                  "same directory as this script.")
 
     def initialize_sport_sessions(self):
+        if not self.sport_sessions_dir_validated:
+            print("Can't initialize sessions without giving a valid directory!")
+            return
         sessions = []
         new_sessions = []
         for file in os.listdir(self.sport_sessions_dir):
@@ -29,7 +32,7 @@ class Parser:
         print("Initializing sessions...")
         number_of_sessions = 0
         for session in sessions:
-            with open(self.sport_sessions_dir + session) as data:
+            with open(self.sport_sessions_dir + "/" + session) as data:
                 session_data = json.load(data)
             try:
                 start_time = datetime.fromtimestamp((session_data["start_time"] +
@@ -67,4 +70,3 @@ class Parser:
         new_sessions.sort()
         print(str(number_of_sessions) + " Sessions initialized")
         self.sessions = new_sessions
-
